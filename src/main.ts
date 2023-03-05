@@ -9,6 +9,7 @@ const bot =  WechatyBuilder.build({
 // get a Wechaty instance
 
 async function main() {
+  const startTime = Date.now();
   await chatGPTBot.startGPTBot();
   bot
     .on("scan", async (qrcode, status) => {
@@ -23,6 +24,9 @@ async function main() {
       chatGPTBot.setBotName(user.name());
     })
     .on("message", async (message) => {
+      if(Date.now() - startTime < 30000){
+      	return;
+      }
       if (!chatGPTBot.ready) {
         return;
       }

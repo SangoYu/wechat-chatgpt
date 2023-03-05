@@ -63,6 +63,7 @@ export class ChatGPTPool {
     for (const account of config.chatGPTAccountPool) {
       const chatGpt = new ChatGPTAPI({
         apiKey: process.env.OPENAI_API_KEY as string,
+	systemMessage: ' ',
         debug: true,
       })
       try {
@@ -141,17 +142,15 @@ export class ChatGPTPool {
     try {
       // TODO: Add Retry logic
       const {
-        id,
         text: response,
         role,
-        conversationId: newConversationId,
-        parentMessageId: newMessageId,
+        id: newMessageId,
       } = await conversation.sendMessage(message, {
-        conversationId,
+       // name: talkid.slice(1),
         parentMessageId: messageId,
       });
       // Update conversation information
-      this.setConversation(talkid, newConversationId, newMessageId);
+      this.setConversation(talkid, conversationId, newMessageId);
       return response;
     } catch (err: any) {
       if (err.message.includes("ChatGPT failed to refresh auth token")) {

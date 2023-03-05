@@ -5,6 +5,8 @@
   "main": "dist/main.js",
   "export": "dist/main.js",
   "scripts": {
+    "start": "tsc && pm2 start dist/main.js",
+    "restart": "tsc && pm2 restart dist/main.js",
     "dev": "nodemon --exec node --watch config.yaml --loader ts-node/esm src/main.ts",
     "build": "tsc"
   },
@@ -12,9 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "async-retry": "^1.3.3",
-    "chatgpt": "^4.0.4",
+    "chatgpt": "^5.0.4",
+    "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.3",
     "execa": "^6.1.0",
+    "fetch": "^1.1.0",
+    "isomorphic-fetch": "^3.0.0",
     "qrcode": "^1.5.1",
     "uuid": "^9.0.0",
     "wechaty": "^1.20.2",
