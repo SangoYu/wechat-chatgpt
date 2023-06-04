@@ -25,6 +25,8 @@ const Commands = ["/reset", "/help"] as const;
 export class ChatGPTPool {
   chatGPTPools: Array<IChatUnOffItem> | [] = [];
   conversationsPool: Map<string, IConversationUnOffItem> = new Map();
+  parentMessageId: string = process.env.parentMessageId || '';
+
   async resetAccount(account: IAccount) {
     // Remove all conversation information
     this.conversationsPool.forEach((item, key) => {
@@ -149,9 +151,11 @@ export class ChatGPTPool {
         id: newMessageId,
       } = await conversation.sendMessage(message, {
        // name: talkid.slice(1),
-        parentMessageId: messageId,
+        conversationId: process.env.conversationId,
+        parentMessageId: this.parentMessageId || process.env.parentMessageId
       });
       // Update conversation information
+      this.parentMessageId = newMessageId;
       this.setConversation(talkid, conversationId, newMessageId);
       return response;
     } catch (err: any) {
