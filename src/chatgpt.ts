@@ -65,6 +65,7 @@ export class ChatGPTPool {
     for (const account of config.chatGPTAccountPool) {
       const chatGpt = new ChatGPTUnofficialProxyAPI({
         accessToken: process.env.ACCESS_TOKEN as string,
+        apiReverseProxyUrl: process.env.apiReverseProxyUrl as string,
         debug: true,
       })
       try {
