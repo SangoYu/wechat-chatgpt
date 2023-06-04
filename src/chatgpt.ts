@@ -63,7 +63,7 @@ export class ChatGPTPool {
     for (const account of config.chatGPTAccountPool) {
       const chatGpt = new ChatGPTAPI({
         apiKey: process.env.OPENAI_API_KEY as string,
-	systemMessage: ' ',
+	      systemMessage: ' ',
         debug: true,
       })
       try {
