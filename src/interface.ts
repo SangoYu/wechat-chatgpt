@@ -1,4 +1,4 @@
-import { ChatGPTAPI } from "chatgpt";
+import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from "chatgpt";
 export interface AccountWithUserInfo {
   password: string;
   email: string;
@@ -12,8 +12,20 @@ export interface IChatGPTItem {
   chatGpt: ChatGPTAPI;
   account: IAccount;
 }
+
+export interface IChatUnOffItem{
+  chatGpt:ChatGPTUnofficialProxyAPI;
+  account: IAccount;
+}
 export interface IConversationItem {
   conversation: ChatGPTAPI;
+  account: IAccount;
+  conversationId?: string;
+  messageId?: string;
+}
+
+export interface IConversationUnOffItem {
+  conversation: ChatGPTUnofficialProxyAPI;
   account: IAccount;
   conversationId?: string;
   messageId?: string;

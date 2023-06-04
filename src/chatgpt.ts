@@ -1,4 +1,4 @@
-import { ChatGPTAPI } from "chatgpt";
+import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from "chatgpt";
 
 import { config } from "./config.js";
 import {
@@ -6,6 +6,8 @@ import {
   IConversationItem,
   AccountWithUserInfo,
   IAccount,
+  IChatUnOffItem,
+  IConversationUnOffItem,
 } from "./interface.js";
 
 const ErrorCode2Message: Record<string, string> = {
@@ -21,8 +23,8 @@ const ErrorCode2Message: Record<string, string> = {
 };
 const Commands = ["/reset", "/help"] as const;
 export class ChatGPTPool {
-  chatGPTPools: Array<IChatGPTItem> | [] = [];
-  conversationsPool: Map<string, IConversationItem> = new Map();
+  chatGPTPools: Array<IChatUnOffItem> | [] = [];
+  conversationsPool: Map<string, IConversationUnOffItem> = new Map();
   async resetAccount(account: IAccount) {
     // Remove all conversation information
     this.conversationsPool.forEach((item, key) => {
@@ -61,9 +63,8 @@ export class ChatGPTPool {
   async startPools() {
     const chatGPTPools = [];
     for (const account of config.chatGPTAccountPool) {
-      const chatGpt = new ChatGPTAPI({
-        apiKey: process.env.OPENAI_API_KEY as string,
-	      systemMessage: ' ',
+      const chatGpt = new ChatGPTUnofficialProxyAPI({
+        accessToken: process.env.ACCESS_TOKEN as string,
         debug: true,
       })
       try {
@@ -95,15 +96,15 @@ export class ChatGPTPool {
     return "❓ 未知命令｜Unknow Command";
   }
   // Randome get chatgpt item form pool
-  get chatGPTAPI(): IChatGPTItem {
+  get chatGPTAPI(): IChatUnOffItem {
     return this.chatGPTPools[
       Math.floor(Math.random() * this.chatGPTPools.length)
     ];
   }
   // Randome get conversation item form pool
-  getConversation(talkid: string): IConversationItem {
+  getConversation(talkid: string): IConversationUnOffItem {
     if (this.conversationsPool.has(talkid)) {
-      return this.conversationsPool.get(talkid) as IConversationItem;
+      return this.conversationsPool.get(talkid) as IConversationUnOffItem;
     }
     const chatGPT = this.chatGPTAPI;
     if (!chatGPT) {
