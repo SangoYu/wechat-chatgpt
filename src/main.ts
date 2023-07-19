@@ -24,11 +24,10 @@ async function main() {
       chatGPTBot.setBotName(user.name());
     })
     .on("message", async (message) => {
-      console.log(message.date());
-      if (Date.now() - new Date(message.date()).getTime() > 30000){
-      	return;
-      }
       if (!chatGPTBot.ready) {
+        return;
+      }
+      if (Date.now() - new Date(message.date()).getTime() > 30000) {
         return;
       }
       if (message.text().startsWith("/ping")) {
@@ -36,6 +35,7 @@ async function main() {
         return;
       }
       try {
+        console.log(message.date());
         console.log(`Message: ${message}`);
         await chatGPTBot.onMessage(message);
       } catch (e) {
