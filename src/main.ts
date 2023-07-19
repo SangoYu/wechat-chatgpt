@@ -24,7 +24,8 @@ async function main() {
       chatGPTBot.setBotName(user.name());
     })
     .on("message", async (message) => {
-      if(Date.now() - startTime < 30000){
+      console.log(message.date());
+      if (Date.now() - new Date(message.date()).getTime() > 30000){
       	return;
       }
       if (!chatGPTBot.ready) {
