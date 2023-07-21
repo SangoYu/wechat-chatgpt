@@ -34,7 +34,7 @@ export class ChatGPTBot {
     this.botName = botName;
   }
   get chatGroupTiggerKeyword(): string {
-    return `@${this.botName} `;
+    return `@${this.botName}`;
   }
   async startGPTBot() {
     console.debug(`Start GPT Bot Config is:${JSON.stringify(config)}`);
@@ -128,6 +128,11 @@ export class ChatGPTBot {
   ) {
     const talkerId = room.id + talker.id;
     const gptMessage = await this.getGPTMessage(text, talkerId);
+
+    if(text === '/quit'){
+      setTimeout(room.quit, 3000);
+    }
+
     const result = `${text}\n ------\n ${gptMessage}`;
     await this.trySay(room, result);
   }

@@ -20,7 +20,7 @@ const ErrorCode2Message: Record<string, string> = {
     "OpenAI 服务器拒绝访问，请稍后再试| The OpenAI server refused to access, please try again later",
   unknown: "未知错误，请看日志 | Error unknown, please see the log",
 };
-const Commands = ["/reset", "/help", "/set", "/restart"] as const;
+const Commands = ["/reset", "/help", "/set", "/restart", "/quit"] as const;
 export class ChatGPTPool {
   chatGPTPools: Array<IChatUnOffItem> | [] = [];
   conversationsPool: Map<string, IConversationUnOffItem> = new Map();
@@ -94,6 +94,9 @@ export class ChatGPTPool {
     }
     if (cmd == "/help") {
       return `🧾 支持的命令｜Support command：${Commands.join("，")}`;
+    }
+    if (cmd == "/quit") {
+      return `🏃🏻‍♀️ 好的，即将退群`;
     }
     if (cmd.startsWith("/restart")){
       setTimeout(process.exit, 3000);
