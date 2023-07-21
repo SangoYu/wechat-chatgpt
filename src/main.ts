@@ -1,15 +1,15 @@
-import { WechatyBuilder } from "wechaty";
+import { WechatyBuilder, Wechaty } from "wechaty";
 import QRCode from "qrcode";
 import { ChatGPTBot } from "./bot.js";
-const chatGPTBot = new ChatGPTBot();
+import { initRedisConfig } from "./config.js";
 
-const bot =  WechatyBuilder.build({
-  name: "wechat-assistant", // generate xxxx.memory-card.json and save login data for the next login
-});
+let chatGPTBot: ChatGPTBot;
+
+let bot: Wechaty;
+
 // get a Wechaty instance
 
 async function main() {
-  const startTime = Date.now();
   await chatGPTBot.startGPTBot();
   bot
     .on("scan", async (qrcode, status) => {
@@ -50,4 +50,14 @@ async function main() {
     );
   }
 }
-main();
+
+async function start() {
+  await initRedisConfig();
+  bot = WechatyBuilder.build({
+    name: "wechat-assistant", // generate xxxx.memory-card.json and save login data for the next login
+  });
+  chatGPTBot = new ChatGPTBot();
+  main();
+}
+
+start();

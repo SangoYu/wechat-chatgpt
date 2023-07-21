@@ -38,4 +38,9 @@ export interface IConfig {
   openAIProxy?: string;
   clearanceToken: string;
   userAgent: string;
+  parentMessageId: string;
+  accessToken: string;
+  conversationId: string;
+  apiReverseProxyUrl: string;
+  [propName: string]: any;
 }

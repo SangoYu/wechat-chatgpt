@@ -7,6 +7,7 @@
   "scripts": {
     "start": "tsc && pm2 start dist/main.js",
     "restart": "tsc && pm2 restart dist/main.js",
+    "prestart": "npm install",
     "dev": "nodemon --exec node --watch config.yaml --loader ts-node/esm src/main.ts",
     "build": "tsc"
   },
@@ -21,6 +22,7 @@
     "fetch": "^1.1.0",
     "isomorphic-fetch": "^3.0.0",
     "qrcode": "^1.5.1",
+    "redis": "^4.6.7",
     "uuid": "^9.0.0",
     "wechaty": "^1.20.2",
     "wechaty-puppet-wechat": "^1.18.4",

@@ -1,6 +1,5 @@
 import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from "chatgpt";
-
-import { config } from "./config.js";
+import { config, redisClient } from "./config.js";
 import {
   IChatGPTItem,
   IConversationItem,
@@ -21,11 +20,11 @@ const ErrorCode2Message: Record<string, string> = {
     "OpenAI 服务器拒绝访问，请稍后再试| The OpenAI server refused to access, please try again later",
   unknown: "未知错误，请看日志 | Error unknown, please see the log",
 };
-const Commands = ["/reset", "/help"] as const;
+const Commands = ["/reset", "/help", "/set", "/restart"] as const;
 export class ChatGPTPool {
   chatGPTPools: Array<IChatUnOffItem> | [] = [];
   conversationsPool: Map<string, IConversationUnOffItem> = new Map();
-  parentMessageId: string = process.env.parentMessageId || '';
+  parentMessageId: string = config.parentMessageId;
 
   async resetAccount(account: IAccount) {
     // Remove all conversation information
@@ -66,7 +65,7 @@ export class ChatGPTPool {
     const chatGPTPools = [];
     for (const account of config.chatGPTAccountPool) {
       const chatGpt = new ChatGPTUnofficialProxyAPI({
-        accessToken: process.env.ACCESS_TOKEN as string,
+        accessToken:  config.accessToken,
         apiReverseProxyUrl: process.env.apiReverseProxyUrl as string,
         debug: true,
       })
@@ -95,6 +94,14 @@ export class ChatGPTPool {
     }
     if (cmd == "/help") {
       return `🧾 支持的命令｜Support command：${Commands.join("，")}`;
+    }
+    if (cmd.startsWith("/restart")){
+      process.exit()
+    }
+    if (cmd.startsWith("/set")){
+      let [, key, value] = cmd.split(' ');
+      redisClient.set(key, value);
+      return `Redis设置 ${key} \n ${value}`;
     }
     return "❓ 未知命令｜Unknow Command";
   }
@@ -152,11 +159,12 @@ export class ChatGPTPool {
       } = await conversation.sendMessage(message, {
        // name: talkid.slice(1),
         conversationId: process.env.conversationId,
-        parentMessageId: this.parentMessageId || process.env.parentMessageId
+        parentMessageId: this.parentMessageId || config.parentMessageId
       });
       // Update conversation information
       this.parentMessageId = newMessageId;
       this.setConversation(talkid, conversationId, newMessageId);
+      redisClient.set('parentMessageId', newMessageId);
       return response;
     } catch (err: any) {
       if (err.message.includes("ChatGPT failed to refresh auth token")) {
