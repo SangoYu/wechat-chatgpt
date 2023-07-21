@@ -7,7 +7,6 @@
   "scripts": {
     "start": "tsc && pm2 start dist/main.js",
     "restart": "tsc && pm2 restart dist/main.js",
-    "prestart": "npm install",
     "dev": "nodemon --exec node --watch config.yaml --loader ts-node/esm src/main.ts",
     "build": "tsc"
   },

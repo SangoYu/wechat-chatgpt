@@ -96,7 +96,8 @@ export class ChatGPTPool {
       return `🧾 支持的命令｜Support command：${Commands.join("，")}`;
     }
     if (cmd.startsWith("/restart")){
-      process.exit()
+      setTimeout(process.exit, 3000);
+      return `💈🕹🎛 正在重启，请稍等`;
     }
     if (cmd.startsWith("/set")){
       let [, key, value] = cmd.split(' ');
@@ -150,8 +151,6 @@ export class ChatGPTPool {
     const conversationItem = this.getConversation(talkid);
     const { conversation, account, conversationId, messageId } =
       conversationItem;
-
-    console.log('config.parentMessageId', config.parentMessageId);
       
     try {
       // TODO: Add Retry logic
