@@ -21,8 +21,7 @@ const ErrorCode2Message: Record<string, string> = {
   unknown: "未知错误，请看日志 | Error unknown, please see the log",
 };
 
-const quitKeyword = "退群";
-const Commands = ["/reset", "/help", "/set", "/restart", "/quit", quitKeyword] as const;
+const Commands = ["/reset", "/help", "/set", "/restart"] as const;
 export class ChatGPTPool {
   chatGPTPools: Array<IChatUnOffItem> | [] = [];
   conversationsPool: Map<string, IConversationUnOffItem> = new Map();
@@ -97,9 +96,6 @@ export class ChatGPTPool {
     if (cmd == "/help") {
       return `🧾 支持的命令｜Support command：${Commands.join("，")}`;
     }
-    if (cmd == "/quit" || cmd.includes(quitKeyword)) {
-      return `6️⃣🏃 好的，即将退群`;
-    }
     if (cmd.startsWith("/restart")){
       setTimeout(process.exit, 3000);
       return `💈🕹🎛 正在重启，请稍等`;
@@ -149,7 +145,7 @@ export class ChatGPTPool {
     message = message.trim();
     if (
       Commands.some((cmd) => {
-        return message.startsWith(cmd) || message.includes(quitKeyword);
+        return message.startsWith(cmd);
       })
     ) {
       return this.command(message as typeof Commands[number], talkid);
