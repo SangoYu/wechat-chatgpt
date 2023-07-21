@@ -141,6 +141,7 @@ export class ChatGPTPool {
   }
   // send message with talkid
   async sendMessage(message: string, talkid: string): Promise<string> {
+    message = message.trim();
     if (
       Commands.some((cmd) => {
         return message.startsWith(cmd);

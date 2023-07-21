@@ -34,7 +34,7 @@ export class ChatGPTBot {
     this.botName = botName;
   }
   get chatGroupTiggerKeyword(): string {
-    return `@${this.botName}`;
+    return `@${this.botName} `;
   }
   async startGPTBot() {
     console.debug(`Start GPT Bot Config is:${JSON.stringify(config)}`);
