@@ -20,7 +20,9 @@ const ErrorCode2Message: Record<string, string> = {
     "OpenAI 服务器拒绝访问，请稍后再试| The OpenAI server refused to access, please try again later",
   unknown: "未知错误，请看日志 | Error unknown, please see the log",
 };
-const Commands = ["/reset", "/help", "/set", "/restart", "/quit", "退群"] as const;
+
+const quitKeyword = "退群";
+const Commands = ["/reset", "/help", "/set", "/restart", "/quit", quitKeyword] as const;
 export class ChatGPTPool {
   chatGPTPools: Array<IChatUnOffItem> | [] = [];
   conversationsPool: Map<string, IConversationUnOffItem> = new Map();
@@ -95,7 +97,7 @@ export class ChatGPTPool {
     if (cmd == "/help") {
       return `🧾 支持的命令｜Support command：${Commands.join("，")}`;
     }
-    if (cmd == "/quit" || cmd.includes("退群")) {
+    if (cmd == "/quit" || cmd.includes(quitKeyword)) {
       return `6️⃣🏃 好的，即将退群`;
     }
     if (cmd.startsWith("/restart")){
@@ -147,7 +149,7 @@ export class ChatGPTPool {
     message = message.trim();
     if (
       Commands.some((cmd) => {
-        return message.startsWith(cmd);
+        return message.startsWith(cmd) || message.includes(quitKeyword);
       })
     ) {
       return this.command(message as typeof Commands[number], talkid);
