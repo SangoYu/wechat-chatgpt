@@ -27,7 +27,7 @@ async function main() {
       if (!chatGPTBot.ready) {
         return;
       }
-      if (Date.now() - new Date(message.date()).getTime() > 30000) {
+      if (Date.now() - new Date(message.date()).getTime() > 10000) {
         return;
       }
       if (message.text().startsWith("/ping")) {

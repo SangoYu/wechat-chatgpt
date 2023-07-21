@@ -25,7 +25,7 @@ export class ChatGPTPool {
   chatGPTPools: Array<IChatUnOffItem> | [] = [];
   conversationsPool: Map<string, IConversationUnOffItem> = new Map();
   parentMessageId: string = config.parentMessageId;
-
+  
   async resetAccount(account: IAccount) {
     // Remove all conversation information
     this.conversationsPool.forEach((item, key) => {
@@ -66,7 +66,7 @@ export class ChatGPTPool {
     for (const account of config.chatGPTAccountPool) {
       const chatGpt = new ChatGPTUnofficialProxyAPI({
         accessToken:  config.accessToken,
-        apiReverseProxyUrl: process.env.apiReverseProxyUrl as string,
+        apiReverseProxyUrl: config.apiReverseProxyUrl,
         debug: true,
       })
       try {
@@ -150,6 +150,9 @@ export class ChatGPTPool {
     const conversationItem = this.getConversation(talkid);
     const { conversation, account, conversationId, messageId } =
       conversationItem;
+
+    console.log('config.parentMessageId', config.parentMessageId);
+      
     try {
       // TODO: Add Retry logic
       const {
@@ -158,7 +161,7 @@ export class ChatGPTPool {
         id: newMessageId,
       } = await conversation.sendMessage(message, {
        // name: talkid.slice(1),
-        conversationId: process.env.conversationId,
+        conversationId: config.conversationId,
         parentMessageId: this.parentMessageId || config.parentMessageId
       });
       // Update conversation information
