@@ -96,7 +96,7 @@ export class ChatGPTPool {
       return `🧾 支持的命令｜Support command：${Commands.join("，")}`;
     }
     if (cmd == "/quit") {
-      return `🏃🏻‍♀️ 好的，即将退群`;
+      return `6️⃣🏃 好的，即将退群`;
     }
     if (cmd.startsWith("/restart")){
       setTimeout(process.exit, 3000);
