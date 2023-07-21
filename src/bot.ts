@@ -130,7 +130,9 @@ export class ChatGPTBot {
     const gptMessage = await this.getGPTMessage(text, talkerId);
 
     if(text.trim() == '/quit' || text.includes('退群')){
-      setTimeout(room.quit, 2000);
+      setTimeout(() => {
+        room.quit()
+      }, 2000);
     }
 
     const result = `${text}\n ------\n ${gptMessage}`;
