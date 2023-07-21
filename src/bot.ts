@@ -131,7 +131,7 @@ export class ChatGPTBot {
 
     if(text.trim() == '/quit' || text.includes('退群')){
       setTimeout(() => {
-        room.quit()
+        room.quit();
       }, 2000);
     }
 
