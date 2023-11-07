@@ -15,7 +15,7 @@ export async function getXfMessage (msg:string) {
         'Content-Type': 'application/json',
         time, sign
       },
-      method: 'post',
+      method: 'POST',
       body: JSON.stringify({time, msg})
     });
     let { code, data: { text, message } } = await res.json();

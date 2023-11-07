@@ -37,7 +37,7 @@ export class ChatGPTBot {
     return `@${this.botName}`;
   }
   async startGPTBot() {
-    console.debug(`Start GPT Bot Config is:${JSON.stringify(config)}`);
+    // console.debug(`Start GPT Bot Config is:${JSON.stringify(config)}`);
     // await this.chatGPTPool.startPools();
     console.debug(`🤖️ Start GPT Bot Success, ready to handle message!`);
     this.ready = true;
