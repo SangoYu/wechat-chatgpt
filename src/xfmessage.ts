@@ -12,6 +12,7 @@ export async function getXfMessage (msg:string) {
   try {
     let res = await fetch(CHAT_URL, {
       headers: {
+        'Content-Type': 'application/json',
         time, sign
       },
       method: 'post',
