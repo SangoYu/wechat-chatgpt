@@ -1,4 +1,4 @@
-import { ChatGPTPool } from "./chatgpt.js";
+import { getXfMessage } from "./xfmessage.js";
 import { config } from "./config.js";
 import { ContactInterface, RoomInterface } from "wechaty/impls";
 import { Message } from "wechaty";
@@ -26,7 +26,7 @@ enum MessageType {
 const SINGLE_MESSAGE_MAX_SIZE = 500;
 export class ChatGPTBot {
   // Record talkid with conversation id
-  chatGPTPool = new ChatGPTPool();
+  // chatGPTPool = new ChatGPTPool();
   chatPrivateTiggerKeyword = config.chatPrivateTiggerKeyword;
   botName: string = "";
   ready = false;
@@ -38,7 +38,7 @@ export class ChatGPTBot {
   }
   async startGPTBot() {
     console.debug(`Start GPT Bot Config is:${JSON.stringify(config)}`);
-    await this.chatGPTPool.startPools();
+    // await this.chatGPTPool.startPools();
     console.debug(`🤖️ Start GPT Bot Success, ready to handle message!`);
     this.ready = true;
   }
@@ -58,8 +58,8 @@ export class ChatGPTBot {
     // remove more text via - - - - - - - - - - - - - - -
     return text;
   }
-  async getGPTMessage(text: string, talkerId: string): Promise<string> {
-    return await this.chatGPTPool.sendMessage(text, talkerId);
+  async getGPTMessage(text: string, talkerId: string): Promise<void> {
+    // return await this.chatGPTPool.sendMessage(text, talkerId);
   }
   // The message is segmented according to its size
   async trySay(
@@ -117,7 +117,7 @@ export class ChatGPTBot {
 
   async onPrivateMessage(talker: ContactInterface, text: string) {
     const talkerId = talker.id;
-    const gptMessage = await this.getGPTMessage(text, talkerId);
+    const gptMessage = await getXfMessage(text);
     await this.trySay(talker, gptMessage);
   }
 
@@ -127,7 +127,7 @@ export class ChatGPTBot {
     room: RoomInterface
   ) {
     const talkerId = room.id + talker.id;
-    const gptMessage = await this.getGPTMessage(text, talkerId);
+    const gptMessage = await getXfMessage(text);
 
     const result = `${text}\n ------\n ${gptMessage}`;
     await this.trySay(room, result);
