@@ -10,6 +10,7 @@ export async function getXfMessage (msg:string) {
   let time = Date.now().toString();
   let sign = getSign(time);
   try {
+    console.log({time, msg});
     let res = await fetch(CHAT_URL, {
       headers: {
         time, sign
