@@ -8,7 +8,7 @@ dotenv.config();
 // If config file exist read config file. else read config from environment variables.
 let configFile: any = {};
 
-let redisHost = process.env.REDIS_HOST;
+const { REDIS_HOST: redisHost, REDIS_AUTH:redisPassword} = process.env;
 
 if (fs.existsSync("./config.yaml")) {
   const file = fs.readFileSync("./config.yaml", "utf8");
@@ -33,7 +33,7 @@ if (fs.existsSync("./config.yaml")) {
   };
 }
 
-export const redisClient = createClient({url: 'redis://' + redisHost});
+export const redisClient = createClient({ url: `redis://:${redisPassword}@${redisHost}` });
 
 export const config: IConfig = {
   chatGPTAccountPool: configFile.chatGPTAccountPool as Array<IAccount>,
